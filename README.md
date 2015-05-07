@@ -17,7 +17,7 @@ Completed user stories:
 
  Advanced: Display each user profile image using a RoundedImageView.
 
- Advanced: Display a nice default placeholder graphic for each image during loading (read more about Picasso).
+ Advanced: Display a nice default placeholder graphic for each image during loading.
 
  Advanced: Improve the user interface through styling and coloring.
 
