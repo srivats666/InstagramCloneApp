@@ -29,4 +29,5 @@ Completed user stories:
 
  Walkthrough of all user stories:
 
+ ![alt tag](https://github.com/srivats666/InstagramCloneApp/blob/master/Instagram.gif)
 
