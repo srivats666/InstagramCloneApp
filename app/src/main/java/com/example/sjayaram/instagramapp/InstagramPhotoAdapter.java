@@ -33,6 +33,16 @@ import java.util.regex.Pattern;
  */
 public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 
+    private static class ViewHolder {
+        TextView userName;
+        ImageView userProfile;
+        TextView date;
+        ImageView photo;
+        TextView likes;
+        TextView caption;
+    }
+
+
     public InstagramPhotoAdapter(Context context, List<InstagramPhoto> objects) {
         super(context, android.R.layout.simple_list_item_1, objects);
     }
@@ -40,28 +50,41 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         InstagramPhoto photo  = getItem(position);
+        ViewHolder viewHolder;
+
         if(convertView == null)
         {
+            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo, parent, false);
+            viewHolder.userName = (TextView) convertView.findViewById(R.id.tvUsername);
+            viewHolder.userProfile = (ImageView) convertView.findViewById(R.id.ivProfilePic);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.tvDate);
+            viewHolder.photo = (ImageView) convertView.findViewById(R.id.ivPhoto);
+            viewHolder.likes = (TextView) convertView.findViewById(R.id.tvLikes);
+            viewHolder.caption = (TextView) convertView.findViewById(R.id.tvCaption);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
+
+        /*TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
         ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfilePic);
         TextView tvDate = (TextView)convertView.findViewById(R.id.tvDate);
         ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
         TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
         TextView tvCaption = (TextView)convertView.findViewById(R.id.tvCaption);
-        //final VideoView vvVideo = (VideoView)convertView.findViewById(R.id.vvVideo);
+        final VideoView vvVideo = (VideoView)convertView.findViewById(R.id.vvVideo);*/
 
         //set Details
-        tvUsername.setText(photo.username);
-        tvDate.setText(DateUtils.getRelativeTimeSpanString(photo.timeStamp * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS));
-        tvCaption.setText(photo.caption);
+        viewHolder.userName.setText(photo.username);
+        viewHolder.date.setText(DateUtils.getRelativeTimeSpanString(photo.timeStamp * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS));
+        viewHolder.caption.setText(photo.caption);
         DecimalFormat formatter = new DecimalFormat("#,###");
-        tvLikes.setText(formatter.format(photo.likesCount) + " likes");
+        viewHolder.likes.setText(formatter.format(photo.likesCount) + " likes");
 
         //Set profile image
-        ivProfile.setImageResource(0);
+        viewHolder.userProfile.setImageResource(0);
         Transformation transformation = new RoundedTransformationBuilder()
                 .cornerRadiusDp(35)
                 .oval(true)
@@ -71,17 +94,15 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
                 .load(photo.profile_picture)
                 .resize(120, 0)
                 .transform(transformation)
-                .into(ivProfile);
+                .into(viewHolder.userProfile);
 
         //Set image resource
         //if(photo.videoUrl==null) {
             //vvVideo.setVisibility(View.INVISIBLE);
             //ivPhoto.setVisibility(View.VISIBLE);
-            ivPhoto.setImageResource(0);
+           viewHolder.photo.setImageResource(0);
 
             transformation = new RoundedTransformationBuilder()
-                    //.borderColor(Color.BLACK)
-                    //.borderWidthDp(1)
                     .cornerRadiusDp(25)
                     .scaleType(ImageView.ScaleType.CENTER_INSIDE)
                     .build();
@@ -92,9 +113,9 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
             Picasso.with(getContext())
                     .load(photo.imageUrl)
                     .resize(width, height)
-                    .placeholder(R.drawable.placeholder)
                     .transform(transformation)
-                    .into(ivPhoto);
+                    .placeholder(R.drawable.placeholder)
+                    .into(viewHolder.photo);
         //}
         /*else {
             //set video
@@ -121,19 +142,19 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
             });
         }*/
 
-        tvCaption.setAutoLinkMask(0);
+        viewHolder.caption.setAutoLinkMask(0);
         Pattern hashTagsPattern = Pattern.compile("(#[a-zA-Z0-9_-]+)");
 
         //Scheme for Linkify, when a word matched tagMatcher pattern,
         //that word is appended to this URL and used as content URI
         String newActivityURL = "http://instagram.com";
         //Attach Linkify to TextView
-        Linkify.addLinks(tvCaption, hashTagsPattern, newActivityURL);
+        Linkify.addLinks(viewHolder.caption, hashTagsPattern, newActivityURL);
 
         Pattern pattern = Pattern.compile("(@[A-Za-z0-9_-]+)");
         String scheme = "http://instagram.com/";
-        Linkify.addLinks(tvCaption, pattern, scheme, null, mentionFilter);
-        tvCaption.setLinkTextColor(Color.parseColor("#2792ff"));
+        Linkify.addLinks(viewHolder.caption, pattern, scheme, null, mentionFilter);
+        viewHolder.caption.setLinkTextColor(Color.parseColor("#2792ff"));
 
         return convertView;
     }
