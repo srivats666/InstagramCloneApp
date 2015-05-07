@@ -27,6 +27,8 @@ Completed user stories:
  
  Advanced: Used Linkify to match hashtags and usernames.
 
+ Advanced: Improving Performance with the ViewHolder Pattern.
+
  Walkthrough of all user stories:
 
  ![alt tag](https://github.com/srivats666/InstagramCloneApp/blob/master/Instagram.gif)
