@@ -55,15 +55,13 @@
         android:cropToPadding="false"
         android:minHeight="50dp" />
 
-    <!--VideoView
-
-        android:layout_width="320px"
-        android:layout_height="240px"
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/vvVideo"
         android:layout_below="@+id/ivProfilePic"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        /-->
+        android:layout_centerInParent="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"

@@ -93,10 +93,10 @@ public class PhotosActivity extends Activity {
                         if (photoJson.optJSONObject("caption") != null)
                             photo.caption = photoJson.getJSONObject("caption").getString("text");
 
-                        //if("image".equalsIgnoreCase(type))
+                        if("image".equalsIgnoreCase(type))
                             photo.imageUrl = photoJson.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-                        //else
-                            //photo.videoUrl = photoJson.getJSONObject("videos").getJSONObject("standard_resolution").getString("url");
+                        else
+                            photo.videoUrl = photoJson.getJSONObject("videos").getJSONObject("standard_resolution").getString("url");
 
                         //photo.imageHeight = photoJson.getJSONObject("images").getJSONObject("standard_resolution").getString("height");
                         photo.likesCount = photoJson.getJSONObject("likes").getInt("count");

@@ -29,6 +29,8 @@ Completed user stories:
 
  Advanced: Improving Performance with the ViewHolder Pattern.
 
+ Advanced: Allow video posts to be played using the VideoView.
+
  Walkthrough of all user stories:
 
  ![alt tag](https://github.com/srivats666/InstagramCloneApp/blob/master/Instagram.gif)

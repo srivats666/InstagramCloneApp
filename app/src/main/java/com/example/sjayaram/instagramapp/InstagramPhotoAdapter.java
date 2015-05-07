@@ -40,6 +40,7 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
         ImageView photo;
         TextView likes;
         TextView caption;
+        VideoView video;
     }
 
 
@@ -50,7 +51,7 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         InstagramPhoto photo  = getItem(position);
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if(convertView == null)
         {
@@ -60,21 +61,13 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
             viewHolder.userProfile = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             viewHolder.date = (TextView) convertView.findViewById(R.id.tvDate);
             viewHolder.photo = (ImageView) convertView.findViewById(R.id.ivPhoto);
+            viewHolder.video = (VideoView) convertView.findViewById(R.id.vvVideo);
             viewHolder.likes = (TextView) convertView.findViewById(R.id.tvLikes);
             viewHolder.caption = (TextView) convertView.findViewById(R.id.tvCaption);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-
-        /*TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
-        ImageView ivProfile = (ImageView)convertView.findViewById(R.id.ivProfilePic);
-        TextView tvDate = (TextView)convertView.findViewById(R.id.tvDate);
-        ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
-        TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
-        TextView tvCaption = (TextView)convertView.findViewById(R.id.tvCaption);
-        final VideoView vvVideo = (VideoView)convertView.findViewById(R.id.vvVideo);*/
 
         //set Details
         viewHolder.userName.setText(photo.username);
@@ -97,10 +90,10 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
                 .into(viewHolder.userProfile);
 
         //Set image resource
-        //if(photo.videoUrl==null) {
-            //vvVideo.setVisibility(View.INVISIBLE);
-            //ivPhoto.setVisibility(View.VISIBLE);
-           viewHolder.photo.setImageResource(0);
+        if(photo.videoUrl==null) {
+            viewHolder.video.setVisibility(View.INVISIBLE);
+            viewHolder.photo.setVisibility(View.VISIBLE);
+            viewHolder.photo.setImageResource(0);
 
             transformation = new RoundedTransformationBuilder()
                     .cornerRadiusDp(25)
@@ -116,31 +109,34 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
                     .transform(transformation)
                     .placeholder(R.drawable.placeholder)
                     .into(viewHolder.photo);
-        //}
-        /*else {
+        }
+        else {
             //set video
-            ivPhoto.setVisibility(View.INVISIBLE);
-            vvVideo.setVisibility(View.VISIBLE);
+            viewHolder.photo.setVisibility(View.INVISIBLE);
+            viewHolder.video.setVisibility(View.VISIBLE);
+            //viewHolder.video.setImageResource(0);
 
-            *//*int width = DeviceDimensionsHelper.getDisplayWidth(getContext()) - 50;
+            int width = DeviceDimensionsHelper.getDisplayWidth(getContext()) - 50;
             int height = DeviceDimensionsHelper.getDisplayHeight(getContext()) - 610;
 
-            vvVideo.setMinimumWidth(width);
-            vvVideo.setMinimumHeight(height);*//*
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)viewHolder.video.getLayoutParams();
 
+            layoutParams.height = height;
+            layoutParams.width = width;
+            viewHolder.video.setLayoutParams(layoutParams);
 
-            vvVideo.setVideoPath(photo.videoUrl);
+            viewHolder.video.setVideoPath(photo.videoUrl);
             MediaController mediaController = new MediaController(getContext());
-            mediaController.setAnchorView(vvVideo);
-            vvVideo.setMediaController(mediaController);
-            vvVideo.requestFocus();
-            vvVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            //mediaController.setAnchorView(viewHolder.video);
+            viewHolder.video.setMediaController(mediaController);
+            viewHolder.video.requestFocus();
+            viewHolder.video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 // Close the progress bar and play the video
                 public void onPrepared(MediaPlayer mp) {
-                    vvVideo.start();
+                    viewHolder.video.start();
                 }
             });
-        }*/
+        }
 
         viewHolder.caption.setAutoLinkMask(0);
         Pattern hashTagsPattern = Pattern.compile("(#[a-zA-Z0-9_-]+)");
