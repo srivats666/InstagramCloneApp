@@ -2,6 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent" android:background="#ffffff">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent" android:paddingTop="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="2dp"
+        android:id="@+id/topLayout">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -10,10 +17,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:paddingTop="5dp"
-        android:paddingLeft="20dp"
-        android:paddingBottom="2dp"/>
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,9 +29,8 @@
         android:typeface="sans"
         android:textColor="#19528c"
         android:textStyle="bold"
-        android:paddingTop="10dp"
+        android:layout_centerVertical="true"
         android:paddingLeft="5dp"
-        android:paddingBottom="2dp"
         />
 
     <TextView
@@ -35,47 +38,67 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvDate"
         android:layout_alignParentRight="true"
+        android:textStyle="bold"
         android:textSize="15sp"
         android:typeface="sans"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
         android:drawableLeft="@drawable/clock"
+        android:layout_centerVertical="true"
+        android:gravity="center"
         android:drawablePadding="2dp"
         android:textColor="#858585" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="15dp"
+        android:id="@+id/videoLayout"
+        android:layout_centerInParent="true"
+        >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ivPhoto"
-        android:layout_below="@+id/ivProfilePic"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:cropToPadding="false"
         android:minHeight="50dp" />
 
+
     <VideoView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/vvVideo"
-        android:layout_below="@+id/ivProfilePic"
-        android:layout_centerInParent="true"
         />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent" android:paddingTop="2dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
+        android:id="@+id/bottomLayout"
+        android:layout_below="@+id/videoLayout"
+        >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvLikes"
-        android:layout_below="@+id/ivPhoto"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="15sp"
         android:typeface="sans"
         android:textColor="#19528c"
         android:textStyle="bold"
-        android:paddingTop="2dp"
-        android:paddingLeft="25dp"
         android:paddingBottom="3dp"
         android:drawableLeft="@drawable/heart"
         android:drawablePadding="2dp"
@@ -94,11 +117,10 @@
         android:typeface="sans"
         android:textColor="#858585"
         android:paddingTop="3dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:paddingBottom="15dp"
         android:autoLink="all"
         android:linksClickable="true"
         />
+
+        </RelativeLayout>
 
 </RelativeLayout>

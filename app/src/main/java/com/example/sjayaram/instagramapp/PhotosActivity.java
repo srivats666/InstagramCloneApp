@@ -60,7 +60,7 @@ public class PhotosActivity extends Activity {
     }
 
     public void fetchTimelineAsync(int page) {
-                aPhotos.clear();
+                //aPhotos.clear();
                 fetchPopularPhotos();
                 // ...the data has come back, add new items to your adapter...
                 //aPhotos.addAll(photos);
@@ -96,13 +96,13 @@ public class PhotosActivity extends Activity {
                         if("image".equalsIgnoreCase(type))
                             photo.imageUrl = photoJson.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
                         else
-                            photo.videoUrl = photoJson.getJSONObject("videos").getJSONObject("standard_resolution").getString("url");
+                           photo.videoUrl = photoJson.getJSONObject("videos").getJSONObject("standard_resolution").getString("url");
 
                         //photo.imageHeight = photoJson.getJSONObject("images").getJSONObject("standard_resolution").getString("height");
                         photo.likesCount = photoJson.getJSONObject("likes").getInt("count");
                         photo.profile_picture = photoJson.getJSONObject("user").getString("profile_picture");
                         photo.timeStamp = photoJson.getLong("created_time");
-                        photos.add(photo);
+                        photos.add(0, photo);
                     }
                 }
                 catch(JSONException ex){

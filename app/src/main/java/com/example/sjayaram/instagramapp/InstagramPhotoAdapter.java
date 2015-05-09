@@ -2,12 +2,16 @@ package com.example.sjayaram.instagramapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.SurfaceTexture;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -89,36 +93,34 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
                 .transform(transformation)
                 .into(viewHolder.userProfile);
 
+        //RelativeLayout layout = (RelativeLayout)convertView.findViewById(R.id.videoLayout);
+
         //Set image resource
         if(photo.videoUrl==null) {
             viewHolder.video.setVisibility(View.INVISIBLE);
             viewHolder.photo.setVisibility(View.VISIBLE);
-            viewHolder.photo.setImageResource(0);
+            //layout.setBackgroundResource(0);
 
+            viewHolder.photo.setImageResource(0);
             transformation = new RoundedTransformationBuilder()
                     .cornerRadiusDp(25)
-                    .scaleType(ImageView.ScaleType.CENTER_INSIDE)
                     .build();
-
-            int width = DeviceDimensionsHelper.getDisplayWidth(getContext()) - 50;
-            int height = DeviceDimensionsHelper.getDisplayHeight(getContext()) - 610;
 
             Picasso.with(getContext())
                     .load(photo.imageUrl)
-                    .resize(width, height)
                     .transform(transformation)
-                    .placeholder(R.drawable.placeholder)
+                    .placeholder(R.drawable.placeholder1)
                     .into(viewHolder.photo);
         }
         else {
             //set video
             viewHolder.photo.setVisibility(View.INVISIBLE);
             viewHolder.video.setVisibility(View.VISIBLE);
-            //viewHolder.video.setImageResource(0);
+
+            //layout.setBackgroundResource(R.drawable.shape_video);
 
             int width = DeviceDimensionsHelper.getDisplayWidth(getContext()) - 50;
             int height = DeviceDimensionsHelper.getDisplayHeight(getContext()) - 610;
-
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)viewHolder.video.getLayoutParams();
 
             layoutParams.height = height;
@@ -127,7 +129,6 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 
             viewHolder.video.setVideoPath(photo.videoUrl);
             MediaController mediaController = new MediaController(getContext());
-            //mediaController.setAnchorView(viewHolder.video);
             viewHolder.video.setMediaController(mediaController);
             viewHolder.video.requestFocus();
             viewHolder.video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -136,6 +137,7 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
                     viewHolder.video.start();
                 }
             });
+
         }
 
         viewHolder.caption.setAutoLinkMask(0);
@@ -161,4 +163,5 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
             return match.group(1);
         }
     };
+
 }
