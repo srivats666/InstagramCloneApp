@@ -1,7 +1,11 @@
 package com.example.sjayaram.instagramapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -38,6 +42,17 @@ public class PhotosActivity extends Activity {
         aPhotos = new InstagramPhotoAdapter(this, photos);
         ListView lvPhotos = (ListView)findViewById(R.id.lvPhotos);
         lvPhotos.setAdapter(aPhotos);
+
+        if(!isNetworkAvailable())
+        {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(PhotosActivity.this);
+            dlgAlert.setMessage(R.string.no_network_errormsg);
+            dlgAlert.setTitle(R.string.error_title);
+            dlgAlert.setPositiveButton("OK", null);
+            dlgAlert.create().show();
+            return;
+        }
+
         fetchPopularPhotos();
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -90,7 +105,7 @@ public class PhotosActivity extends Activity {
                         InstagramPhoto photo = new InstagramPhoto();
                         photo.username = photoJson.getJSONObject("user").getString("username");
 
-                        if (photoJson.optJSONObject("caption") != null)
+                        //if (photoJson.optJSONObject("caption") != null)
                             photo.caption = photoJson.getJSONObject("caption").getString("text");
 
                         if("image".equalsIgnoreCase(type))
@@ -114,14 +129,33 @@ public class PhotosActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 throwable.printStackTrace();
+                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(PhotosActivity.this);
+
+                dlgAlert.setMessage(R.string.json_errormsg);
+                dlgAlert.setTitle(R.string.error_title);
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.create().show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
+                throwable.printStackTrace();
+                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(PhotosActivity.this);
+
+                dlgAlert.setMessage(R.string.json_errormsg);
+                dlgAlert.setTitle(R.string.error_title);
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.create().show();
             }
         });
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     @Override
